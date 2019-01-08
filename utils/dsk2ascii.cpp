@@ -67,10 +67,25 @@ public:
         Iterator<Count>* itKmers = tool.createIterator (solidKmers.iterator(), solidKmers.getNbItems(), "parsing");
         LOCAL(itKmers);
 
+        // bladrome for kmer-frequence
+        const string xmlinfo = (storage->getGroup("dsk").getProperty("xml").c_str());
+        //int kmer_number_start = xmlinfo.find("<kmers_number>");
+        //int kmer_number_end = xmlinfo.find("</kmers_number>");
+        int kmer_number_start = xmlinfo.find("<bank_total_nt>");
+        int kmer_number_end = xmlinfo.find("</bank_total_nt>");
+        kmer_number_start += 15;
+        double kmer_number = atof(xmlinfo.substr(kmer_number_start, kmer_number_end - kmer_number_start).c_str());
+        cout << kmer_number << endl;
+        cout << xmlinfo << endl;
+        // end bladrome
+
         for (itKmers->first(); !itKmers->isDone(); itKmers->next())
         {
             const Count& count = itKmers->item();
-            output << model.toString(count.value) << " " << count.abundance << "\n";
+            //output << model.toString(count.value) << " " << count.abundance << "\n";
+            // bladrome 
+            output << model.toString(count.value) << " " << count.abundance / kmer_number << "\n";
+            // end bladrome
         }
 
         output.close();
