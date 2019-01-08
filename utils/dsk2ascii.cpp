@@ -71,12 +71,13 @@ public:
         const string xmlinfo = (storage->getGroup("dsk").getProperty("xml").c_str());
         //int kmer_number_start = xmlinfo.find("<kmers_number>");
         //int kmer_number_end = xmlinfo.find("</kmers_number>");
-        int kmer_number_start = xmlinfo.find("<bank_total_nt>");
-        int kmer_number_end = xmlinfo.find("</bank_total_nt>");
-        kmer_number_start += 15;
+        string tagnameS = "<bank_total_nt>";
+        string tagnameE = "</bank_total_nt>";
+        int kmer_number_start = xmlinfo.find(tagnameS);
+        int kmer_number_end = xmlinfo.find(tagnameE);
+        kmer_number_start += tagnameS.length();
+
         double kmer_number = atof(xmlinfo.substr(kmer_number_start, kmer_number_end - kmer_number_start).c_str());
-        cout << kmer_number << endl;
-        cout << xmlinfo << endl;
         // end bladrome
 
         for (itKmers->first(); !itKmers->isDone(); itKmers->next())
